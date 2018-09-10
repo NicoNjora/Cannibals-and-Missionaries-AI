@@ -1,7 +1,4 @@
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.*;
 
 class Agent {
 
@@ -80,36 +77,57 @@ class Agent {
         //printGraph(newAgent);
 
         System.out.println("Following is Depth First Traversal ,starting from vertex 0");
-        newAgent.depthFirstSearch(newAgent, 0, 15);
+        newAgent.depthFirstSearch(newAgent, 0, 14);
 
     }
 
-    void depthFirstSearch(Agent agent, int statrtVertex, int noOfvertices) {
+    void depthFirstSearch(Agent agent, int statrtVertex, int goalstate) {
         boolean visited[] = new boolean[noOfvertices];
-        depthFirstSearchProcess(agent, statrtVertex, visited);
+
+        ArrayList<Integer> pathlist = new ArrayList<>();
+
+        pathlist.add(statrtVertex);
+        depthFirstSearchProcess(agent, statrtVertex, goalstate, visited, pathlist);
 
     }
 
 
-    void depthFirstSearchProcess(Agent newAgent, int startVertex, boolean visited[]) {
+    void depthFirstSearchProcess(Agent newAgent, int startVertex, int goalstate, boolean visited[], List<Integer> path) {
+
 
         visited[startVertex] = true; //mark the current node as visited
-        System.out.print(startVertex + " \n");
 
+        //check if the current node is goalstate
+        if (isGoalState(startVertex, goalstate)) {
+            System.out.println(path);
+        }
         //check for adjacent nodes
         for (SystemState pCrawl : newAgent.mainGraph[startVertex]) {
             int nextNode = pCrawl.getNodeNumber();
             //check if the node is visited
             if (!visited[nextNode]) {
-
                 startVertex = nextNode;
+                path.add(startVertex);
 
-                depthFirstSearchProcess(newAgent, startVertex, visited);
+                depthFirstSearchProcess(newAgent, startVertex, goalstate, visited, path);
+
+                path.remove(startVertex);
 
             }
 
 
         }
+        visited[startVertex] = false;
 
     }
+
+    //check if current state is goalSate
+    static boolean isGoalState(Integer currentState, Integer goalState) {
+        if (currentState.equals(goalState)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }
