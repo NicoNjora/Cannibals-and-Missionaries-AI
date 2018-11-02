@@ -74,20 +74,20 @@ class Agent {
         addEdge(newAgent, 12, returnState(12, 0, 0, 3, 3, 1, 14));
         addEdge(newAgent, 13, returnState(13, 0, 0, 3, 3, 1, 14));
 
-        //printGraph(newAgent);
+        printGraph(newAgent);
 
         System.out.println("Following is Depth First Traversal ,starting from vertex 0");
         newAgent.depthFirstSearch(newAgent, 0, 14);
 
     }
 
-    void depthFirstSearch(Agent agent, int statrtVertex, int goalstate) {
+    void depthFirstSearch(Agent agent, int startVertex, int goalstate) {
         boolean visited[] = new boolean[noOfvertices];
 
         ArrayList<Integer> pathlist = new ArrayList<>();
 
-        pathlist.add(statrtVertex);
-        depthFirstSearchProcess(agent, statrtVertex, goalstate, visited, pathlist);
+        pathlist.add(startVertex);
+        depthFirstSearchProcess(agent, startVertex, goalstate, visited, pathlist);
 
     }
 
@@ -100,24 +100,23 @@ class Agent {
         //check if the current node is goalstate
         if (isGoalState(startVertex, goalstate)) {
             System.out.println(path);
-        }
+            System.exit(0);
+        } else {
         //check for adjacent nodes
-        for (SystemState pCrawl : newAgent.mainGraph[startVertex]) {
-            int nextNode = pCrawl.getNodeNumber();
-            //check if the node is visited
-            if (!visited[nextNode]) {
-                startVertex = nextNode;
-                path.add(startVertex);
+            for (SystemState pCrawl : newAgent.mainGraph[startVertex]) {
+                int nextNode = pCrawl.getNodeNumber();
+                //check if the node is visited
+                if (!visited[nextNode]) {
+                    startVertex = nextNode;
+                    path.add(startVertex);
 
-                depthFirstSearchProcess(newAgent, startVertex, goalstate, visited, path);
+                    depthFirstSearchProcess(newAgent, startVertex, goalstate, visited, path);
+
+                }
 
                 path.remove(startVertex);
-
             }
-
-
         }
-        visited[startVertex] = false;
 
     }
 
